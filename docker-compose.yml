@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  ubuntu_host:
+    image: did/ubuntu_host:22.04
+    privileged: true
+    build:
+      context: ./ubuntu_host
+    container_name: ubuntu_host
+    volumes:
+      - ./service:/opt/service
+      - .env:/opt/.env
+    environment:
+      - TZ=Asia/Bangkok
+    deploy:
+      resources:
+        limits:
+          memory: ${MEM_LIMIT}
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
